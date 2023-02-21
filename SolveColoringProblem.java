@@ -4,6 +4,13 @@ import java.util.stream.Collectors;
 
 import javax.swing.JFileChooser;
 public class SolveColoringProblem {
+	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		new SolveColoringProblem();
+	}
+	
+	
 	private int numOfCountry;
 	public Hashtable<String, String> variable; // variabes for each country
 	private String[] DomainColor; // possible color
@@ -15,22 +22,27 @@ public class SolveColoringProblem {
 		DomainColor = new String[] {"Red","Green","Blue","Yellow","Violet","Gray","Orange"};
 		country = "none";
 		getInfoFromFile();
-		for(int i=1; i<7 ; i++) {
-			Hashtable<String, String> ans = Backtrack(variable, i);
-			if(ans!=null) {
-				ans.forEach((k,v)->{
-					System.out.println(k + " : "+ v);
-				});
-				break;
+		if(variable.size()>= 2 && variable.size()<=20 ) { // testing 
+			for(int i=1; i<7 ; i++) {
+				Hashtable<String, String> ans = Backtrack(variable, i);
+				if(ans!=null) {
+					ans.forEach((k,v)->{
+						System.out.println(k + " : "+ v);
+					});
+					break;
+				}
 			}
+		}else {
+			System.out.println("The number of countery must be between 2 and 20 including 2, 20.");
 		}
+		
 	}
 
 	public void getInfoFromFile() throws IOException{
 		// assuming graph.txt file located in the same project folder
 		// if not then add the entire path
 		final JFileChooser fc = new JFileChooser("Choose your graph file. (.txt)");
-		fc.showOpenDialog(fc);
+		fc.showOpenDialog(fc);//choose your map file
 		File file = fc.getSelectedFile();
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		
@@ -52,6 +64,7 @@ public class SolveColoringProblem {
 	}
 	
 	public Hashtable<String, String> Backtrack(Hashtable<String, String> var,int numOfColor) {
+		//BACKTRACKING method
 		Hashtable<String, String> tempVar = (Hashtable<String, String>) var.clone();
 		tempVar.forEach((k,v)->{
 			if(v == "none") {
@@ -59,6 +72,7 @@ public class SolveColoringProblem {
 			}
 		});
 		if(country == "none") {
+			System.out.println("The map needs minimum of " + numOfColor + " colors!");
 			return tempVar;
 		}
 		for(int j=0; j<numOfColor; j++) {
@@ -95,11 +109,6 @@ public class SolveColoringProblem {
 			}
 		}
 		return true;
-	}
-
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		SolveColoringProblem solver = new SolveColoringProblem();
 	}
 
 }
